@@ -10,10 +10,15 @@ public class ProdutoService : IProdutoService
 
     public ProdutoService(IProdutoRepository repository) => _repository = repository;
 
-    public async Task<List<ProdutoResponse>> ListarAsync(CancellationToken ct = default)
+    public async Task<PagedResult<ProdutoResponse>> ListarAsync(ProdutoFiltro filtro, CancellationToken ct = default)
     {
-        var produtos = await _repository.ListarAsync(ct);
-        return produtos.Select(Mapear).ToList();
+        var pagina = await _repository.ListarAsync(filtro, ct);
+        return new PagedResult<ProdutoResponse>(
+            pagina.Items.Select(Mapear).ToList(),
+            pagina.Page,
+            pagina.PageSize,
+            pagina.TotalItems
+        );
     }
 
     public async Task<ProdutoResponse?> ObterPorIdAsync(int id, CancellationToken ct = default)

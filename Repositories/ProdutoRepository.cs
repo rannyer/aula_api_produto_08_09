@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProdutosApi.Data;
 using ProdutosApi.Domain;
+using ProdutosApi.DTOs;
 
 namespace ProdutosApi.Repositories;
 
@@ -10,11 +11,22 @@ public class ProdutoRepository : IProdutoRepository
 
     public ProdutoRepository(AppDbContext context) => _context = context;
 
-    public Task<List<Produto>> ListarAsync(CancellationToken ct = default) =>
-        _context.Produtos
-            .AsNoTracking()
-            .OrderBy(p => p.Id)
+    public async Task<PagedResult<Produto>> ListarAsync(ProdutoFiltro filtro, CancellationToken ct = default)
+    {
+        IQueryable<Produto> query = _context.Produtos.AsNoTracking();
+        
+        var total = await query.CountAsync(ct);
+        
+        var itens = await query
+            .Skip(filtro.Skip)
+            .Take(filtro.PageSize)
             .ToListAsync(ct);
+        
+        return new PagedResult<Produto>(itens, filtro.Page, filtro.PageSize, total);
+        
+        
+    }
+       
 
     public Task<Produto?> ObterPorIdAsync(int id, CancellationToken ct = default) =>
         _context.Produtos.FirstOrDefaultAsync(p => p.Id == id, ct);

@@ -14,9 +14,11 @@ public class ProdutosController : ControllerBase
     public ProdutosController(IProdutoService service) => _service = service;
 
     [HttpGet]
-    [ProducesResponseType(typeof(List<ProdutoResponse>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<ProdutoResponse>>> Listar(CancellationToken ct)
-        => Ok(await _service.ListarAsync(ct));
+    [ProducesResponseType(typeof(PagedResult<ProdutoResponse>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<PagedResult<ProdutoResponse>>> Listar([FromQuery] ProdutoFiltro filtro, CancellationToken ct)
+        => Ok(await _service.ListarAsync(filtro, ct));
+// Http://localhost:8080/api/produtos?page=2&pageSize=5&categoria=cama-mesa-banho&preco<10
+
 
     [HttpGet("{id:int}", Name = "ObterProduto")]
     [ProducesResponseType(typeof(ProdutoResponse), StatusCodes.Status200OK)]
