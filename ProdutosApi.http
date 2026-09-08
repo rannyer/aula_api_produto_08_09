@@ -1,0 +1,55 @@
+@host = http://localhost:5099
+
+### Listar todos
+GET {{host}}/api/produtos
+
+### Obter por id
+GET {{host}}/api/produtos/1
+
+### Id inexistente
+GET {{host}}/api/produtos/999999
+
+### Criar
+POST {{host}}/api/produtos
+Content-Type: application/json
+
+{
+  "nome": "Teclado Mecânico ABNT2",
+  "descricao": "Switch marrom, 87 teclas",
+  "preco": 349.90,
+  "estoque": 25
+}
+
+### Criar com nome repetido
+POST {{host}}/api/produtos
+Content-Type: application/json
+
+{
+  "nome": "Teclado Mecânico ABNT2",
+  "preco": 349.90,
+  "estoque": 25
+}
+
+### Payload inválido
+POST {{host}}/api/produtos
+Content-Type: application/json
+
+{
+  "nome": "ab",
+  "preco": -10,
+  "estoque": -5
+}
+
+### Atualizar
+PUT {{host}}/api/produtos/1
+Content-Type: application/json
+
+{
+  "nome": "Mouse Modelo 001 Revisado",
+  "descricao": "Atualizado em aula",
+  "preco": 199.90,
+  "estoque": 10
+}
+
+### Remover
+DELETE {{host}}/api/produtos/2
