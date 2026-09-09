@@ -17,7 +17,7 @@ public class ProdutosController : ControllerBase
     [ProducesResponseType(typeof(PagedResult<ProdutoResponse>), StatusCodes.Status200OK)]
     public async Task<ActionResult<PagedResult<ProdutoResponse>>> Listar([FromQuery] ProdutoFiltro filtro, CancellationToken ct)
         => Ok(await _service.ListarAsync(filtro, ct));
-// Http://localhost:8080/api/produtos?page=2&pageSize=5&categoria=cama-mesa-banho&preco<10
+// Http://localhost:8080/api/produtos?page=2&pageSize=5&precoMin=20
 
 
     [HttpGet("{id:int}", Name = "ObterProduto")]
@@ -25,12 +25,7 @@ public class ProdutosController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ProdutoResponse>> ObterPorId(int id, CancellationToken ct)
     {
-        var produto = await _service.ObterPorIdAsync(id, ct);
-
-        if (produto is null)
-            return NotFound();
-
-        return Ok(produto);
+        return Ok(await _service.ObterPorIdAsync(id, ct));
     }
 
     [HttpPost]
@@ -47,12 +42,7 @@ public class ProdutosController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ProdutoResponse>> Atualizar(int id, [FromBody] ProdutoRequest request, CancellationToken ct)
     {
-        var atualizado = await _service.AtualizarAsync(id, request, ct);
-
-        if (atualizado is null)
-            return NotFound();
-
-        return Ok(atualizado);
+        return Ok( await _service.AtualizarAsync(id, request, ct));
     }
 
     [HttpDelete("{id:int}")]
@@ -60,11 +50,7 @@ public class ProdutosController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Remover(int id, CancellationToken ct)
     {
-        var removido = await _service.RemoverAsync(id, ct);
-
-        if (!removido)
-            return NotFound();
-
+       await _service.RemoverAsync(id, ct);
         return NoContent();
     }
 }

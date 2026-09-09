@@ -42,6 +42,7 @@ public class ProdutoRepository : IProdutoRepository
             "criadoem" => filtro.Desc ? query.OrderByDescending(p => p.CriadoEm) : query.OrderBy(p => p.CriadoEm),
             _ => filtro.Desc ? query.OrderByDescending(p => p.Id) : query.OrderBy(p => p.Id)
         };
+      
         return ordenada.ThenBy(p => p.Id);
     }
 

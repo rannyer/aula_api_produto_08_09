@@ -34,6 +34,7 @@ public class AppDbContext : DbContext
             entidade.HasIndex(p => p.Nome)
                     .IsUnique()
                     .HasDatabaseName("ix_produtos_nome");
+            
 
             entidade.HasIndex(p => p.Preco);
         });
