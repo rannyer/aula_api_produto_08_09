@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProdutosApi.Data;
+using ProdutosApi.Middleware;
 using ProdutosApi.Repositories;
 using ProdutosApi.Services;
 
@@ -26,6 +27,7 @@ builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
