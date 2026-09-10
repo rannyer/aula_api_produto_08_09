@@ -48,7 +48,9 @@ public class ProdutoRepository : IProdutoRepository
 
     public async Task<PagedResult<Produto>> ListarAsync(ProdutoFiltro filtro, CancellationToken ct = default)
     {
-        IQueryable<Produto> query = _context.Produtos.AsNoTracking();
+        IQueryable<Produto> query = _context.Produtos.AsNoTracking()
+            .Include(p => p.Etiquetas)
+            .AsSplitQuery();
         
         query = AplicarFiltro(query, filtro);
         

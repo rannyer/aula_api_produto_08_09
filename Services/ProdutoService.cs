@@ -90,5 +90,6 @@ public class ProdutoService : IProdutoService
     }
 
     private static ProdutoResponse Mapear(Produto p) =>
-        new(p.Id, p.Nome, p.Descricao, p.Preco, p.Estoque, p.CriadoEm);
+        new(p.Id, p.Nome, p.Descricao, p.Preco, p.Estoque, p.CriadoEm, 
+            p.Etiquetas.Select(e => new EtiquetaDtos.EtiquetaResumo(e.Id, e.Nome, e.Descricao)).ToList());
 }

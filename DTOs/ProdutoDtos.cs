@@ -8,7 +8,9 @@ public record ProdutoResponse(
     string? Descricao,
     decimal Preco,
     int Estoque,
-    DateTime CriadoEm);
+    DateTime CriadoEm,
+    IReadOnlyList<EtiquetaDtos.EtiquetaResumo> Etiquetas
+    );
 
 public class ProdutoRequest
 {

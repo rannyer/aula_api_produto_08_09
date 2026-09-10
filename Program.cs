@@ -23,6 +23,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     }
 });
 
+
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
 
