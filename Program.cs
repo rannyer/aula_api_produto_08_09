@@ -26,6 +26,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
+builder.Services.AddScoped<IEtiquetaRepository, EtiquetaRepository>();
+builder.Services.AddScoped<IEtiquetaService, EtiquetaService>();
 
 var app = builder.Build();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
