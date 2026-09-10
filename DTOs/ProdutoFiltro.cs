@@ -32,5 +32,7 @@ public class ProdutoFiltro
     public string OrderBy { get; set; }
     public bool Desc { get; set; }
     
+    public string? Etiqueta { get; set; }
+    
 
 }

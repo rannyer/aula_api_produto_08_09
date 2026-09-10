@@ -1,3 +1,4 @@
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using ProdutosApi.Data;
 using ProdutosApi.Domain;
@@ -29,6 +30,11 @@ public class ProdutoRepository : IProdutoRepository
             query = query.Where(p => p.Preco <= filtro.PrecoMaximo.Value);
         }
 
+        if(!string.IsNullOrWhiteSpace(filtro.Etiqueta))
+        {
+            var etiqueta = filtro.Etiqueta.Trim();
+            query = query.Where(p => p.Etiquetas.Any(e =>EF.Functions.ILike(e.Nome,etiqueta)));
+        }
         return query;
     }
     
