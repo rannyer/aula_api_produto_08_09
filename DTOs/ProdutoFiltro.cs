@@ -29,7 +29,7 @@ public class ProdutoFiltro
     public string? Nome { get; set; }
     public decimal? PrecoMinimo { get; set; }
     public decimal? PrecoMaximo { get; set; }
-    public string OrderBy { get; set; }
+    public string? OrderBy { get; set; } = "id";
     public bool Desc { get; set; }
     
     public string? Etiqueta { get; set; }

@@ -11,4 +11,6 @@ public interface IProdutoRepository
     Task AdicionarAsync(Produto produto, CancellationToken ct = default);
     void Remover(Produto produto);
     Task<int> SalvarAsync(CancellationToken ct = default);
+    Task<Etiqueta?> ObterEtiquetaPorIdAsync(int etiquetaId, CancellationToken ct = default);
+    Task<bool> EtiquetaJaAssociadaAsync(int produtoId, int etiquetaId, CancellationToken ct = default);
 }

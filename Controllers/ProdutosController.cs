@@ -53,4 +53,13 @@ public class ProdutosController : ControllerBase
        await _service.RemoverAsync(id, ct);
         return NoContent();
     }
+
+    [HttpPost("{produtoId:int}/etiquetas/{etiquetaId:int}")]
+    [ProducesResponseType(typeof(ProdutoResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<ActionResult<ProdutoResponse>> AdicionarEtiqueta(int produtoId, int etiquetaId, CancellationToken ct)
+    {
+        return Ok(await _service.AdicionarEtiquetaAsync(produtoId, etiquetaId, ct));
+    }
 }

@@ -42,9 +42,16 @@ app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await db.Database.EnsureCreatedAsync();
-    await DbSeeder.PopularAsync(db);
+    try
+    {
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        await db.Database.EnsureCreatedAsync();
+        await DbSeeder.PopularAsync(db);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Erro ao inicializar banco: {ex.Message}");
+    }
 }
 
 app.Run();

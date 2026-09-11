@@ -89,6 +89,23 @@ public class ProdutoService : IProdutoService
         return true;
     }
 
+    public async Task<ProdutoResponse> AdicionarEtiquetaAsync(int produtoId, int etiquetaId, CancellationToken ct = default)
+    {
+        var produto = await _repository.ObterPorIdAsync(produtoId, ct)
+            ?? throw new RecursoNaoEncontradoException("Produto", produtoId);
+
+        var etiqueta = await _repository.ObterEtiquetaPorIdAsync(etiquetaId, ct)
+            ?? throw new RecursoNaoEncontradoException("Etiqueta", etiquetaId);
+
+        if (await _repository.EtiquetaJaAssociadaAsync(produtoId, etiquetaId, ct))
+            throw new ConflitoException($"A etiqueta '{etiqueta.Nome}' já está associada ao produto '{produto.Nome}'.");
+
+        produto.Etiquetas.Add(etiqueta);
+        await _repository.SalvarAsync(ct);
+
+        return Mapear(produto);
+    }
+
     private static ProdutoResponse Mapear(Produto p) =>
         new(p.Id, p.Nome, p.Descricao, p.Preco, p.Estoque, p.CriadoEm, 
             p.Etiquetas.Select(e => new EtiquetaDtos.EtiquetaResumo(e.Id, e.Nome, e.Descricao)).ToList());

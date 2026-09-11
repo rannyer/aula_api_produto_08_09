@@ -76,7 +76,9 @@ public class ProdutoRepository : IProdutoRepository
        
 
     public Task<Produto?> ObterPorIdAsync(int id, CancellationToken ct = default) =>
-        _context.Produtos.FirstOrDefaultAsync(p => p.Id == id, ct);
+        _context.Produtos
+            .Include(p => p.Etiquetas)
+            .FirstOrDefaultAsync(p => p.Id == id, ct);
 
     public Task<bool> ExisteNomeAsync(string nome, int? ignorarId = null, CancellationToken ct = default) =>
         _context.Produtos
@@ -89,4 +91,13 @@ public class ProdutoRepository : IProdutoRepository
     public void Remover(Produto produto) => _context.Produtos.Remove(produto);
 
     public Task<int> SalvarAsync(CancellationToken ct = default) => _context.SaveChangesAsync(ct);
+
+    public Task<Etiqueta?> ObterEtiquetaPorIdAsync(int etiquetaId, CancellationToken ct = default) =>
+        _context.Etiquetas.FirstOrDefaultAsync(e => e.Id == etiquetaId, ct);
+
+    public Task<bool> EtiquetaJaAssociadaAsync(int produtoId, int etiquetaId, CancellationToken ct = default) =>
+        _context.Produtos
+            .Where(p => p.Id == produtoId)
+            .SelectMany(p => p.Etiquetas)
+            .AnyAsync(e => e.Id == etiquetaId, ct);
 }
